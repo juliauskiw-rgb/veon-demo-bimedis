@@ -25,7 +25,9 @@ const relativeAssets = () => ({
         const src = await readFile(file, "utf8");
         const out = src
           .replace(new RegExp(`(href|src)="${b}/(?!/)`, "g"), `$1="${prefix}`)
-          .replace(new RegExp(`url\\((["']?)${b}/(?!/)`, "g"), `url($1${prefix}`);
+          .replace(new RegExp(`url\\((["']?)${b}/(?!/)`, "g"), `url($1${prefix}`)
+          .replace(/(href|src)="\/(?!\/)/g, `$1="${prefix}`)
+          .replace(/url\((["']?)\/(?!\/)/g, `url($1${prefix}`);
         if (out !== src) await writeFile(file, out);
       }
     },
