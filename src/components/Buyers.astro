@@ -1,0 +1,83 @@
+---
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import { contacts, SOON } from "../data/site";
+---
+<section id="buyers" class="section buyers">
+  <div class="container shores seam-line">
+    <div class="buyers__left">
+      <h2>Як Bimedis захищає покупця</h2>
+      <p class="lead">Вживана техніка вимагає довіри. Між вами і продавцем стоїть Bimedis.</p>
+
+      <figure class="specimen" aria-labelledby="specimen-cap">
+        <div class="specimen__row">
+          <span class="specimen__label">Обладнання</span>
+          <span class="specimen__value">Назва та модель, стан: нове або вживане</span>
+        </div>
+        <div class="specimen__row">
+          <span class="specimen__label">Ціна</span>
+          <span class="specimen__value specimen__closed"><Icon name="lock" size={18} /> бачить лише Bimedis</span>
+        </div>
+        <div class="specimen__row">
+          <span class="specimen__label">Контакти продавця</span>
+          <span class="specimen__value specimen__closed"><Icon name="lock" size={18} /> бачить лише Bimedis</span>
+        </div>
+        <figcaption id="specimen-cap" class="specimen__cap">Так виглядає закрите оголошення: схема без реальних даних.</figcaption>
+      </figure>
+    </div>
+
+    <ol class="guarantees">
+      <li class="g">
+        <span class="node g__node" aria-hidden="true"></span>
+        <h3 class="g__title">Перевірені продавці</h3>
+        <p class="g__text">Bimedis позначає надійних і перевірених продавців, щоб ви бачили, з ким маєте справу.</p>
+      </li>
+      <li class="g">
+        <span class="node g__node" aria-hidden="true"></span>
+        <h3 class="g__title">Чорний список продавців</h3>
+        <p class="g__text">Перед угодою перевірте продавця: на Bimedis ведеться чорний список.</p>
+        <FutureLink note={SOON} class="g__link fl-quiet">Переглянути чорний список</FutureLink>
+      </li>
+      <li class="g">
+        <span class="node g__node" aria-hidden="true"></span>
+        <h3 class="g__title">Закриті оголошення</h3>
+        <p class="g__text">У закритому оголошенні ціну й контакти продавця бачить лише Bimedis. Деталі ви отримуєте через менеджера.</p>
+      </li>
+      <li class="g g--cta">
+        <span class="node g__node" aria-hidden="true"></span>
+        <p class="g__text">Сумніваєтеся щодо продавця або оголошення? Запитайте менеджера.</p>
+        <div class="btn-row" data-rec="R-002">
+          <a class="btn btn--action" href={contacts.whatsapp}><Icon name="whatsapp" /> WhatsApp</a>
+          <a class="btn btn--outline" href={contacts.viber}><Icon name="viber" /> Viber</a>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .buyers__left { display: grid; gap: var(--s-3); align-content: start; }
+  .specimen { margin: var(--s-2) 0 0; padding: var(--s-3); background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius-lg); display: grid; gap: 0; }
+  .specimen__row { display: grid; gap: 0.15rem; padding-block: var(--s-2); border-bottom: 1px dashed var(--color-line); }
+  .specimen__label { font-size: var(--fs-small); color: var(--color-muted); }
+  .specimen__value { font-weight: 500; }
+  .specimen__closed { display: inline-flex; align-items: center; gap: var(--s-1); color: var(--color-primary); }
+  .specimen__cap { padding-top: var(--s-2); font-size: var(--fs-small); color: var(--color-muted); }
+
+  .guarantees { list-style: none; margin: 0; padding: 0 0 0 var(--s-4); display: grid; gap: var(--s-4); position: relative; }
+  .guarantees::before { content: ""; position: absolute; left: calc(var(--dot) / 2); top: 0.5rem; bottom: 0.5rem; width: 1px; background: var(--color-line); }
+  .g { position: relative; display: grid; gap: var(--s-1); }
+  .g__node { position: absolute; left: calc(-1 * var(--s-4)); top: 0.45em; }
+  .g__title { font-size: var(--fs-index); font-weight: 600; }
+  .g__text { color: var(--color-muted); max-width: 32rem; }
+  .g--cta .g__text { color: var(--color-text); font-weight: 500; }
+  .g--cta .btn-row { margin-top: var(--s-1); }
+  .guarantees :global(.g__link) { justify-self: start; color: var(--color-primary); font-weight: 600; min-height: 2.75rem; }
+
+  @media (min-width: 64rem) {
+    .buyers__left { padding-right: var(--s-4); }
+    .guarantees { padding-left: var(--s-4); align-content: start; padding-top: 0.5rem; }
+    .guarantees::before { display: none; }
+    .g__node { left: calc(-1 * var(--s-4) - var(--gutter) / 2 - var(--dot) / 2); }
+  }
+</style>

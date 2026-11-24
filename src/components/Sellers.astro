@@ -1,0 +1,71 @@
+---
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import { contacts, countries, tiers, extraServices, SOON } from "../data/site";
+const ua = contacts.offices[0];
+---
+<section id="sellers" class="section section--dark sellers">
+  <div class="container">
+    <h2 class="sellers__title">Продавцям: розміщення в міжнародній мережі</h2>
+
+    <div class="shores seam-line sellers__body">
+      <div class="reach">
+        <p class="lead">Ваше оголошення бачать не лише в Україні. Bimedis — мережа локальних сайтів у різних країнах:</p>
+        <p class="reach__countries">{countries.join(", ")}.</p>
+        <p class="reach__note">Автоматичний переклад оголошень на 11 мов, за даними Bimedis.</p>
+        <div class="btn-row" data-rec="R-002">
+          <a class="btn btn--action" href={contacts.whatsapp}><Icon name="whatsapp" /> Обговорити розміщення</a>
+          <a class="btn btn--light" href={contacts.viber}><Icon name="viber" /> Viber</a>
+          <a class="btn btn--light" href={ua.tel}><Icon name="phone" /> <span class="num">{ua.phone}</span></a>
+        </div>
+      </div>
+
+      <div class="offer">
+        <ol class="ladder" aria-label="Тарифи продавців, від базового до преміум">
+          {tiers.map((t, i) => (
+            <li class="step" style={`--i:${i}`}>
+              <span class="step__name">{t.name}</span>
+            </li>
+          ))}
+        </ol>
+        <p class="offer__price">Вартість підкаже менеджер. <FutureLink note={SOON} class="fl-quiet offer__all">Усі тарифи</FutureLink></p>
+
+        <div class="extras">
+          <h3 class="extras__title">Додаткові послуги</h3>
+          <ul class="extras__list">
+            {extraServices.map((s) => <li>{s}</li>)}
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sellers__title { max-width: 20ch; margin-bottom: var(--s-4); }
+  .reach { display: grid; gap: var(--s-3); align-content: start; }
+  .reach__countries { font: 500 var(--fs-index)/1.35 var(--font-display); color: var(--color-seam); }
+  .reach__note { color: var(--color-on-primary-soft); font-size: var(--fs-small); }
+  .reach .btn-row { margin-top: var(--s-2); }
+
+  .offer { display: grid; gap: var(--s-4); align-content: start; }
+  /* the ladder: BASIC at the bottom, each higher tier one step up and to the right */
+  .ladder { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column-reverse; gap: var(--s-1); }
+  .step { min-width: 0; flex-wrap: wrap; display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-2); padding: var(--s-2) var(--s-3); border: 1px solid var(--color-on-primary-line); border-radius: var(--radius); margin-left: calc(var(--i) * var(--step, 0.25rem)); }
+  .step:last-child { border-color: var(--color-seam); }
+  .step__name { font: 600 1.125rem/1.2 var(--font-display); }
+  .offer__price { color: var(--color-on-primary-soft); display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-2); align-items: center; }
+  .offer :global(.offer__all) { color: var(--color-on-primary); font-weight: 600; min-height: 2.75rem; }
+  .extras { display: grid; gap: var(--s-2); }
+  .extras__title { font-size: var(--fs-lead); font-weight: 600; }
+  .extras__list { display: flex; flex-wrap: wrap; gap: var(--s-1); }
+  .extras__list li { padding: 0.4rem 0.9rem; border-radius: var(--radius-pill); border: 1px solid var(--color-on-primary-line); font-size: var(--fs-small); }
+
+  @media (min-width: 64rem) {
+    .sellers__title { margin-bottom: var(--s-5); }
+    .reach { padding-right: var(--s-4); }
+    .offer { padding-left: var(--s-4); }
+    .ladder { --step: 3rem; }
+  }
+</style>

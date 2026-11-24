@@ -1,0 +1,46 @@
+---
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import { directions, SOON } from "../data/site";
+---
+<section id="directions" class="section directions">
+  <div class="container shores">
+    <div class="directions__head">
+      <h2>Інші розділи Bimedis</h2>
+      <p class="lead">Окрім оголошень: каталог, запчастини, послуги, аукціони і розділ для виробників. Хочете співпрацювати — <a class="tlink" href="#contacts">зв'яжіться з представництвом</a>.</p>
+    </div>
+    <ul class="dir-list">
+      {directions.map((name) => (
+        <li>
+          <FutureLink note={SOON} class="dir">
+            <span class="dir__name">{name}</span>
+            <Icon name="arrow" size={24} class="dir__arrow" />
+          </FutureLink>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .directions__head { display: grid; gap: var(--s-3); align-content: start; }
+  .dir-list { border-top: 1px solid var(--color-line); }
+  .dir-list li { border-bottom: 1px solid var(--color-line); }
+  .dir-list :global(.dir) { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); width: 100%; min-height: 4.5rem; padding-block: var(--s-2); color: var(--color-text); }
+  .dir__name { font: 500 var(--fs-index)/1.2 var(--font-display); position: relative; }
+  /* Motion 3: underline draws in */
+  .dir__name::after { content: ""; position: absolute; left: 0; right: 0; bottom: -0.2rem; height: 2px; background: var(--color-primary); transform: scaleX(0); transform-origin: left; transition: transform 220ms var(--ease-out); }
+  .dir-list :global(.dir:hover) .dir__name::after, .dir-list :global(.dir:focus-visible) .dir__name::after { transform: scaleX(1); }
+  .dir-list :global(.dir__arrow) { color: var(--color-muted); flex: none; }
+  .dir-list :global(.dir .future-link__note) { left: auto; right: 0; transform: translate(0, -4px); }
+  .dir-list :global(.dir:hover .future-link__note), .dir-list :global(.dir:focus-visible .future-link__note) { transform: translate(0, 0); }
+
+  @media (min-width: 64rem) {
+    .directions { padding-block: calc(var(--section-pad) * 1.25); }
+    .directions__head { padding-right: var(--s-4); }
+    .dir-list { margin-left: var(--s-4); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dir__name::after { transition: none; }
+  }
+</style>

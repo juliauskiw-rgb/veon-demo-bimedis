@@ -1,0 +1,50 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Categories from "../components/Categories.astro";
+import Buyers from "../components/Buyers.astro";
+import Sellers from "../components/Sellers.astro";
+import TradeIn from "../components/TradeIn.astro";
+import Directions from "../components/Directions.astro";
+import Contacts from "../components/Contacts.astro";
+import Footer from "../components/Footer.astro";
+import StickyBar from "../components/StickyBar.astro";
+import { contacts, socials } from "../data/site";
+
+const title = "Медичне обладнання нове та б/в — купівля і продаж | Bimedis";
+const description = "Нове та вживане медобладнання від перевірених продавців: оголошення, trade-in, розміщення для дилерів і виробників. Напишіть менеджеру у WhatsApp або Viber.";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: "Bimedis",
+      legalName: "ТзОВ «Бімедіс»",
+      email: contacts.email,
+      telephone: contacts.offices.map((o) => o.phone),
+      address: [
+        { "@type": "PostalAddress", streetAddress: "вул. Степана Бандери, 84", addressLocality: "Заліщики", addressRegion: "Тернопільська обл.", postalCode: "48600", addressCountry: "UA" },
+        { "@type": "PostalAddress", streetAddress: "1016 East Osceola Parkway", addressLocality: "Kissimmee", addressRegion: "FL", postalCode: "34744", addressCountry: "US" },
+      ],
+      sameAs: socials.map((s) => s.href),
+    },
+    { "@type": "WebSite", name: "Bimedis", inLanguage: "uk" },
+  ],
+};
+---
+<Base lang="uk" title={title} description={description} mainRec="R-005,R-011">
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <Header slot="header" />
+  <Hero />
+  <Categories />
+  <Buyers />
+  <Sellers />
+  <TradeIn />
+  <Directions />
+  <Contacts />
+  <div class="seam-dot" aria-hidden="true"></div>
+  <Footer slot="footer" />
+  <StickyBar slot="footer" />
+</Base>

@@ -1,0 +1,130 @@
+---
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import { nav, contacts, SOON } from "../data/site";
+const ua = contacts.offices[0];
+---
+<header class="site-header" id="header">
+  <div class="container site-header__bar">
+    <a class="logo" href="#top" aria-label="Bimedis, на початок сторінки">
+      <img src="/bimedis-logo.svg" width="121" height="47" alt="Bimedis" />
+    </a>
+
+    <nav class="nav" aria-label="Розділи сторінки" data-rec="R-004">
+      <ul class="nav__list">
+        {nav.map((item) => <li><a class="nav__link" href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="site-header__aside">
+      <a class="hdr-phone" href={ua.tel} data-rec="R-002">{ua.phone}</a>
+      <FutureLink note={SOON} class="hdr-login">Увійти</FutureLink>
+      <a class="btn btn--action hdr-cta" href="#sellers">Розмістити оголошення</a>
+    </div>
+
+    <div class="site-header__mobile">
+      <a class="icon-btn" href={contacts.whatsapp} aria-label={`Написати у WhatsApp ${contacts.messengerNumber}`} data-rec="R-002">
+        <Icon name="whatsapp" size={24} />
+      </a>
+      <button class="icon-btn menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Відкрити меню">
+        <Icon name="menu" size={24} class="i-open" />
+        <Icon name="close" size={24} class="i-close" />
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu" data-open="false">
+    <div class="container mobile-menu__inner">
+      <ul class="mobile-menu__list">
+        {nav.map((item) => <li><a class="mobile-menu__link" href={item.href}>{item.label}</a></li>)}
+        <li><FutureLink note={SOON} class="mobile-menu__link mobile-menu__login">Увійти</FutureLink></li>
+      </ul>
+      <div class="mobile-menu__contacts">
+        <a class="btn btn--action" href={contacts.whatsapp}><Icon name="whatsapp" /> WhatsApp</a>
+        <a class="btn btn--light" href={contacts.viber}><Icon name="viber" /> Viber</a>
+        <a class="btn btn--light" href={ua.tel}><Icon name="phone" /> <span class="num">{ua.phone}</span></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>(".menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+  if (btn && menu) {
+    const focusables = () => [btn, ...menu.querySelectorAll<HTMLElement>("a, [tabindex='0']")];
+    const setOpen = (open: boolean) => {
+      btn.setAttribute("aria-expanded", String(open));
+      btn.setAttribute("aria-label", open ? "Закрити меню" : "Відкрити меню");
+      menu.dataset.open = String(open);
+      document.documentElement.classList.toggle("menu-open", open);
+      if (open) menu.querySelector<HTMLElement>("a")?.focus();
+    };
+    btn.addEventListener("click", () => setOpen(btn.getAttribute("aria-expanded") !== "true"));
+    menu.addEventListener("click", (e) => {
+      const a = (e.target as HTMLElement).closest("a");
+      if (a && a.getAttribute("href")?.startsWith("#")) setOpen(false);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (menu.dataset.open !== "true") return;
+      if (e.key === "Escape") { setOpen(false); btn.focus(); return; }
+      if (e.key === "Tab") {
+        const list = focusables();
+        const first = list[0], last = list[list.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+    window.matchMedia("(min-width: 64rem)").addEventListener("change", (m) => { if (m.matches) setOpen(false); });
+  }
+</script>
+
+<style>
+  .site-header { position: sticky; top: 0; z-index: 50; background: var(--color-primary); color: var(--color-on-primary); --focus-ring: var(--color-accent); }
+  .site-header__bar { display: flex; align-items: center; gap: var(--s-3); height: var(--header-h); }
+  .logo { display: inline-flex; flex: none; border-radius: var(--radius); }
+  .logo img { height: 2.25rem; width: auto; }
+
+  .nav, .site-header__aside { display: none; }
+  .site-header__mobile { margin-left: auto; display: flex; gap: var(--s-1); }
+  .icon-btn { display: inline-grid; place-items: center; width: 3rem; height: 3rem; border-radius: var(--radius-pill); color: var(--color-on-primary); background: transparent; border: 0; cursor: pointer; transition: background-color var(--dur-fast) var(--ease-out); }
+  .icon-btn:hover { background: var(--color-primary-hover); }
+  .menu-toggle { display: none; }
+  :global(.js) .menu-toggle { display: inline-grid; }
+  .menu-toggle :global(.i-close), .menu-toggle[aria-expanded="true"] :global(.i-open) { display: none; }
+  .menu-toggle[aria-expanded="true"] :global(.i-close) { display: block; }
+
+  .mobile-menu { display: none; }
+  :global(.js) .mobile-menu { display: block; position: fixed; inset: var(--header-h) 0 0 0; background: var(--color-primary); overflow-y: auto; opacity: 0; visibility: hidden; transform: translateY(-8px); transition: opacity 250ms var(--ease-out), transform 250ms var(--ease-out), visibility 0s linear 250ms; }
+  :global(.js) .mobile-menu[data-open="true"] { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+  .mobile-menu__inner { display: flex; flex-direction: column; gap: var(--s-4); padding-block: var(--s-3) var(--s-5); min-height: 100%; }
+  .mobile-menu__list li { border-bottom: 1px solid var(--color-on-primary-line); }
+  .mobile-menu__link, .mobile-menu__list :global(.mobile-menu__link) { display: flex; align-items: center; min-height: 3.5rem; font: 500 var(--fs-index)/1.2 var(--font-display); color: var(--color-on-primary); text-decoration: none; }
+  .mobile-menu__list :global(.mobile-menu__login) { color: var(--color-on-primary-soft); }
+  .mobile-menu__contacts { display: grid; gap: var(--s-2); margin-top: auto; }
+  :global(html.menu-open) { overflow: hidden; }
+
+  @media (min-width: 64rem) {
+    .site-header__mobile, :global(.js) .mobile-menu { display: none; }
+    .nav { display: block; margin-left: var(--s-3); }
+    .nav__list { display: flex; gap: var(--s-2); }
+    .nav__link { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--color-on-primary); text-decoration: none; font-size: 0.9375rem; font-weight: 500; position: relative; }
+    .nav__link::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0.55rem; height: 2px; background: var(--color-seam); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-fast) var(--ease-out); }
+    .nav__link:hover::after, .nav__link:focus-visible::after { transform: scaleX(1); }
+    .site-header__aside { display: flex; align-items: center; gap: var(--s-3); margin-left: auto; }
+    .hdr-phone { color: var(--color-on-primary); text-decoration: none; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; display: none; }
+    .hdr-phone:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+    .site-header__aside :global(.hdr-login) { display: none; color: var(--color-on-primary); font-weight: 500; font-size: 0.9375rem; min-height: 2.75rem; }
+    .hdr-cta { white-space: nowrap; min-height: 2.75rem; padding-inline: 1.15rem; font-size: 0.9375rem; }
+  }
+  @media (min-width: 80rem) {
+    .hdr-phone { display: inline; }
+    .nav__list { gap: var(--s-3); }
+    .site-header__aside :global(.hdr-login) { display: inline-flex; }
+    .nav { margin-left: var(--s-4); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nav__link::after { transition: none; }
+    :global(.js) .mobile-menu { transform: none; }
+  }
+</style>

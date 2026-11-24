@@ -1,0 +1,118 @@
+---
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import { contacts, categoryGroups, tiers } from "../data/site";
+---
+<section id="hero" class="hero" data-rec="R-001,G-R004,MA-R003">
+  <div class="container">
+    <h1 class="hero__title">Купівля і продаж нового та вживаного медичного обладнання</h1>
+
+    <div class="hero__shores">
+      <div class="door door--buy">
+        <p class="door__title"><a class="door__link" href="#categories">Шукаю обладнання <Icon name="arrow" size={28} class="door__arrow" /></a></p>
+        <p class="door__text">{categoryGroups.map((g) => g.title).join(", ")}</p>
+        <FutureLink note="Пошук по оголошеннях з'явиться в повній версії сайту" class="door__search">
+          <Icon name="search" size={20} /> <span>Модель, виробник або категорія</span>
+        </FutureLink>
+      </div>
+
+      <div class="hero__seam" aria-hidden="true"><span class="node"></span></div>
+
+      <div class="door door--sell">
+        <p class="door__title"><a class="door__link" href="#sellers">Продаю обладнання <Icon name="arrow" size={28} class="door__arrow" /></a></p>
+        <p class="door__text door__text--light">Розміщення в міжнародній мережі локальних сайтів Bimedis з автоперекладом оголошень.</p>
+        <ul class="door__tiers" aria-label="Тарифи продавців">
+          {tiers.map((t) => <li>{t.name}</li>)}
+        </ul>
+        <a class="btn btn--action door__cta" href="#sellers">Обговорити розміщення</a>
+      </div>
+    </div>
+
+    <div class="hero__foot">
+      <p class="hero__via">Через Bimedis: перевірені продавці, закриті оголошення.</p>
+      <div class="hero__ask" data-rec="R-002,S-R005">
+        <span class="hero__ask-label">Запитати менеджера</span>
+        <a class="btn btn--outline btn--sm" href={contacts.whatsapp}><Icon name="whatsapp" /> WhatsApp</a>
+        <a class="btn btn--outline btn--sm" href={contacts.viber}><Icon name="viber" /> Viber</a>
+        <span class="hero__num num">{contacts.messengerNumber}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: var(--s-3) var(--s-4); }
+  .hero__title { font-size: var(--fs-h1); max-width: 18ch; color: var(--color-text); }
+
+  .hero__shores { display: grid; grid-template-columns: minmax(0, 1fr); margin-top: var(--s-3); }
+  .door { position: relative; display: flex; flex-direction: column; gap: var(--s-2); padding: var(--s-3); border-radius: var(--radius-lg); }
+  .door--buy { background: var(--color-surface); border: 1px solid var(--color-line); }
+  .door--sell { background: var(--color-primary); color: var(--color-on-primary); --focus-ring: var(--color-accent); }
+  .door__title { font-family: var(--font-display); font-size: var(--fs-index); font-weight: 600; line-height: var(--lh-head); }
+  .door__link { display: inline-flex; align-items: center; gap: var(--s-2); color: inherit; text-decoration: none; }
+  .door__link::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+  .door :global(.door__arrow) { transition: transform var(--dur-fast) var(--ease-out); }
+  .door:hover :global(.door__arrow), .door__link:focus-visible :global(.door__arrow) { transform: translateX(4px); }
+  .door--buy:hover { border-color: var(--color-border); }
+  .door__link:focus-visible { outline: none; }
+  .door:has(.door__link:focus-visible) { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+  .door__text { color: var(--color-muted); font-size: var(--fs-small); max-width: 30rem; display: none; }
+  .door__text--light { color: var(--color-on-primary-soft); }
+  .door :global(.door__search) { position: relative; z-index: 1; display: none; gap: var(--s-1); min-height: 3rem; padding-inline: var(--s-2); border: 1px solid var(--color-border); border-radius: var(--radius-pill); color: var(--color-muted); background: var(--color-bg); align-self: stretch; }
+  .door__tiers { display: none; flex-wrap: wrap; gap: var(--s-1) var(--s-3); font-size: var(--fs-small); color: var(--color-on-primary-soft); }
+  .door__cta { position: relative; z-index: 1; align-self: flex-start; }
+
+  .hero__seam { display: flex; align-items: center; height: var(--s-4); position: relative; }
+  .hero__seam::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--color-line); }
+  .hero__seam .node { position: relative; margin-inline: auto; }
+
+  .hero__foot { display: none; }
+  .btn--sm { min-height: 2.75rem; padding: 0.5rem 1.1rem; font-size: 0.9375rem; }
+
+  @media (max-width: 24rem) {
+    .door { padding: var(--s-2) 1.25rem; }
+    .door__title { font-size: 1.1875rem; }
+    .door__link { gap: var(--s-1); white-space: nowrap; }
+  }
+  @media (min-width: 40rem) {
+    .door__text { display: block; }
+  }
+
+  @media (min-width: 64rem) {
+    .hero { padding-block: var(--s-4); min-height: min(calc(100svh - var(--header-h)), 46rem); display: flex; flex-direction: column; justify-content: center; }
+    .hero > .container { width: min(100% - 2 * var(--space), var(--container)); }
+    .hero__title { max-width: none; }
+    .hero__shores { grid-template-columns: minmax(0, 1fr) var(--gutter) minmax(0, 1fr); margin-top: var(--s-4); align-items: stretch; }
+    .door { padding: var(--s-4); gap: var(--s-2); }
+    .door__text { font-size: var(--fs-body); }
+    .door__title { font-size: var(--fs-index); }
+    .door :global(.door__search) { display: inline-flex; margin-top: auto; }
+    .door__tiers { margin-bottom: var(--s-1); }
+    .door__tiers { display: flex; }
+    .door__cta { margin-top: auto; }
+    .hero__seam { height: auto; justify-content: center; }
+    .hero__seam::before { left: 50%; right: auto; top: 0; bottom: calc(-1 * var(--s-3)); width: 1px; height: auto; transform: translateX(-50%); }
+    .hero__seam .node { margin: 0; }
+
+    .hero__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); margin-top: var(--s-3); }
+    .hero__via { color: var(--color-muted); }
+    .hero__num { font-weight: 600; white-space: nowrap; }
+    .hero__ask { display: flex; align-items: center; gap: var(--s-2); }
+    .hero__ask-label { color: var(--color-muted); margin-right: var(--s-1); }
+  }
+
+  /* Motion 1: the shores part from the seam on load. H1 is never animated. */
+  @keyframes from-seam-left { from { opacity: 0; transform: translateX(16px); } }
+  @keyframes from-seam-right { from { opacity: 0; transform: translateX(-16px); } }
+  @keyframes fade-in { from { opacity: 0; } }
+  :global(.js) .door { animation: fade-in 400ms var(--ease-out) both; }
+  :global(.js) .door--sell { animation-delay: 80ms; }
+  @media (min-width: 64rem) {
+    :global(.js) .door--buy { animation: from-seam-left var(--dur) var(--ease-out) both; }
+    :global(.js) .door--sell { animation: from-seam-right var(--dur) var(--ease-out) both; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .door, :global(.js) .door--buy, :global(.js) .door--sell { animation: none; }
+    .door :global(.door__arrow) { transition: none; }
+  }
+</style>

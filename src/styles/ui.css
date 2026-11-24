@@ -1,0 +1,71 @@
+/* Bimedis UI: shared components (buttons, shores and seam, headings, FutureLink look). Values only from tokens.css. */
+
+html { overflow-x: clip; scrollbar-color: var(--color-primary) var(--color-bg); }
+body { overflow-x: clip; font-size: var(--fs-body); line-height: var(--lh-body); }
+::selection { background: var(--color-seam); color: var(--color-text); }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: var(--lh-head); margin: 0; letter-spacing: -0.015em; color: inherit; }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-index); font-weight: 500; }
+p { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+
+.section { padding-block: var(--section-pad); position: relative; }
+.section--dark { background: var(--color-primary); color: var(--color-on-primary); --focus-ring: var(--color-accent); }
+.lead { font-size: var(--fs-lead); color: var(--color-muted); max-width: 34rem; }
+.section--dark .lead { color: var(--color-on-primary-soft); }
+.small { font-size: var(--fs-small); }
+.muted { color: var(--color-muted); }
+
+/* Two shores around the seam: the seam is the centre of the gap. */
+.shores { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); position: relative; }
+@media (min-width: 64rem) {
+  .shores { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--gutter); }
+  .seam-line { position: relative; }
+  .seam-line::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; transform: translateX(-50%); background: var(--color-line); pointer-events: none; }
+  .section--dark .seam-line::before, .seam-line--dark::before { background: var(--color-seam); }
+}
+/* Seam node: the logo dot */
+.node { display: inline-block; flex: none; width: var(--dot); height: var(--dot); border-radius: 50%; background: var(--color-seam); box-shadow: 0 0 0 3px var(--color-primary); }
+.section--dark .node { box-shadow: 0 0 0 3px var(--color-primary); }
+
+/* Buttons */
+.btn { white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; gap: var(--s-1); min-height: 3rem; padding: 0.75rem 1.4rem; border-radius: var(--radius-pill); font: 600 var(--fs-body)/1.2 var(--font-body); text-decoration: none; cursor: pointer; border: 2px solid transparent; transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); -webkit-tap-highlight-color: transparent; }
+.btn:active { transform: translateY(1px); }
+.btn:disabled, .btn[aria-disabled="true"] { cursor: default; opacity: 0.55; transform: none; }
+.future-link[aria-disabled="true"] { cursor: default; }
+.btn--action { background: var(--color-accent); color: var(--color-on-accent); }
+.btn--action:hover { background: var(--color-accent-hover); }
+.btn--outline { border-color: var(--color-primary); color: var(--color-primary); background: transparent; }
+.btn--outline:hover { background: var(--color-primary); color: var(--color-on-primary); }
+.btn--light { border-color: var(--color-on-primary); color: var(--color-on-primary); background: transparent; }
+.btn--light:hover { background: var(--color-on-primary); color: var(--color-primary); }
+.btn .num { font-weight: 500; font-variant-numeric: tabular-nums; }
+.btn-row { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
+
+/* Text link with underline */
+.tlink { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; transition: text-decoration-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
+.tlink:hover { text-decoration-thickness: 2px; }
+
+/* FutureLink look for this site: quiet dashed underline; tooltip from the base. */
+.future-link { color: inherit; }
+.future-link__note[aria-hidden="true"] { font-family: var(--font-body); background: var(--color-text); color: var(--color-surface); border-radius: var(--radius); font-size: var(--fs-small); }
+.section--dark .future-link__note[aria-hidden="true"], .site-header .future-link__note[aria-hidden="true"], .site-footer .future-link__note[aria-hidden="true"] { background: var(--color-surface); color: var(--color-text); }
+.fl-quiet { text-decoration: underline dashed; text-decoration-thickness: 1px; text-underline-offset: 0.25em; text-decoration-color: currentColor; }
+
+/* Motion 2: the seam dot follows page scroll (desktop, CSS scroll timeline; without support it stays hidden). */
+.seam-dot { display: none; }
+@supports (animation-timeline: scroll()) {
+  @media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+    .seam-dot { display: block; position: fixed; z-index: 30; left: 50%; top: calc(var(--header-h) + var(--s-3)); width: var(--dot); height: var(--dot); margin-left: calc(var(--dot) / -2); border-radius: 50%; background: var(--color-seam); box-shadow: 0 0 0 3px var(--color-primary); pointer-events: none; opacity: 0; animation: seam-travel linear both; animation-timeline: scroll(root); }
+    @keyframes seam-travel {
+      0%, 9% { opacity: 0; transform: translateY(0); }
+      12% { opacity: 1; }
+      93% { opacity: 1; }
+      96%, 100% { opacity: 0; transform: translateY(calc(100vh - var(--header-h) - var(--s-5))); }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:active { transform: none; }
+}

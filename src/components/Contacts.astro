@@ -1,0 +1,74 @@
+---
+import Icon from "./Icon.astro";
+import { contacts, socials } from "../data/site";
+---
+<section id="contacts" class="section contacts">
+  <div class="container">
+    <h2 class="contacts__title">Контакти представництв</h2>
+
+    <div class="shores seam-line offices" data-rec="R-002">
+      {contacts.offices.map((o) => (
+        <article class:list={["office", `office--${o.id}`]}>
+          <span class="node office__node" aria-hidden="true"></span>
+          <h3 class="office__country">{o.country}</h3>
+          <address class="office__addr">{o.address[0]}<br />{o.address[1]}</address>
+          <a class="office__phone" href={o.tel}><Icon name="phone" size={22} /> <span>{o.phone}</span></a>
+        </article>
+      ))}
+    </div>
+
+    <div class="channels">
+      <div class="channels__msg">
+        <p class="channels__label">Месенджери <span class="num">{contacts.messengerNumber}</span></p>
+        <div class="btn-row">
+          <a class="btn btn--action" href={contacts.whatsapp}><Icon name="whatsapp" /> WhatsApp</a>
+          <a class="btn btn--outline" href={contacts.viber}><Icon name="viber" /> Viber</a>
+        </div>
+      </div>
+      <div class="channels__mail">
+        <p class="channels__label">E-mail</p>
+        <a class="channels__email tlink" href={`mailto:${contacts.email}`}><Icon name="mail" /> {contacts.email}</a>
+      </div>
+      <div class="channels__social">
+        <p class="channels__label">Соцмережі</p>
+        <ul class="socials">
+          {socials.map((s) => (
+            <li><a class="social" href={s.href} target="_blank" rel="noopener noreferrer"><Icon name={s.icon} /> {s.name}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contacts__title { margin-bottom: var(--s-4); }
+  .offices { gap: var(--s-3); }
+  .office { position: relative; display: grid; gap: var(--s-2); align-content: start; padding: var(--s-3); background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius-lg); }
+  .office__node { display: none; }
+  .office__country { font-size: var(--fs-h2); font-weight: 600; }
+  .office__addr { font-style: normal; color: var(--color-muted); }
+  .office__phone { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 3rem; justify-self: start; font: 600 var(--fs-index)/1.2 var(--font-display); color: var(--color-primary); text-decoration: none; font-variant-numeric: tabular-nums; }
+  .office__phone span { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; text-decoration-color: var(--color-line); transition: text-decoration-color var(--dur-fast) var(--ease-out); }
+  .office__phone:hover span { text-decoration-color: currentColor; }
+
+  .channels { display: grid; gap: var(--s-4); margin-top: var(--s-5); padding-top: var(--s-4); border-top: 1px solid var(--color-line); }
+  .channels > div { display: grid; gap: var(--s-2); align-content: start; }
+  .channels__label { color: var(--color-muted); font-size: var(--fs-small); }
+  .channels__label .num { color: var(--color-text); font-weight: 600; font-size: var(--fs-body); margin-left: var(--s-1); font-variant-numeric: tabular-nums; }
+  .channels__email { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 3rem; font-weight: 600; font-size: var(--fs-lead); justify-self: start; }
+  .socials { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-3); }
+  .social { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 3rem; color: var(--color-text); font-weight: 500; text-decoration: none; }
+  .social:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+
+  @media (min-width: 64rem) {
+    .contacts__title { margin-bottom: var(--s-5); }
+    .office { padding: var(--s-4); }
+    .office--ua { margin-right: var(--s-4); }
+    .office--us { margin-left: var(--s-4); }
+    .office__node { display: block; position: absolute; top: calc(var(--s-4) + 1.1rem); }
+    .office--ua .office__node { right: calc(-1 * var(--s-4) - var(--gutter) / 2 - var(--dot) / 2 - 1px); }
+    .office--us .office__node { left: calc(-1 * var(--s-4) - var(--gutter) / 2 - var(--dot) / 2 - 1px); }
+    .channels { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr); }
+  }
+</style>

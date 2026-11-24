@@ -1,0 +1,70 @@
+---
+import Icon from "./Icon.astro";
+import { contacts } from "../data/site";
+---
+<section id="trade-in" class="tradein">
+  <div class="container tradein__grid">
+    <div class="tradein__old">
+      <h2>Trade-in: обміняйте старе обладнання</h2>
+      <p class="tradein__side">Ваше старе обладнання</p>
+      <p class="tradein__text">Bimedis приймає старе обладнання в обмін і викуповує техніку в користувачів.</p>
+      <div class="btn-row" data-rec="R-002">
+        <a class="btn btn--action" href={contacts.whatsapp}><Icon name="whatsapp" /> Описати обладнання</a>
+        <a class="btn btn--light" href={contacts.viber}><Icon name="viber" /> Viber</a>
+      </div>
+    </div>
+
+    <div class="tradein__seam" aria-hidden="true">
+      <span class="node"></span>
+    </div>
+
+    <div class="tradein__new">
+      <p class="tradein__side">Нове або вживане замість нього</p>
+      <p class="tradein__text tradein__text--dark">Замість старого — нове або вживане обладнання з оголошень Bimedis. Умови обміну й викупу менеджер уточнить під ваше обладнання.</p>
+      <div class="flow-wrap" data-reveal="clip"><p class="flow" aria-label="Старе обладнання, далі Bimedis, далі нове обладнання">
+        <span>старе</span>
+        <Icon name="arrow" size={22} />
+        <span class="flow__mid">Bimedis</span>
+        <Icon name="arrow" size={22} />
+        <span>нове</span>
+      </p></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tradein { position: relative; background: var(--color-bg); border-top: 1px solid var(--color-on-primary-line); }
+  .tradein__grid { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .tradein__old { background: var(--color-primary); color: var(--color-on-primary); --focus-ring: var(--color-accent); display: grid; gap: var(--s-3); align-content: start; padding: var(--section-pad) var(--space) var(--s-5); margin-inline: calc(-1 * var(--space)); }
+  .tradein__new { display: grid; gap: var(--s-3); align-content: start; padding-block: var(--s-4) var(--section-pad); }
+  .tradein__side { font: 600 var(--fs-index)/var(--lh-head) var(--font-display); }
+  .tradein__old .tradein__side { color: var(--color-seam); }
+  .tradein__text { color: var(--color-on-primary-soft); max-width: 30rem; }
+  .tradein__text--dark { color: var(--color-muted); }
+  .tradein__seam { position: relative; height: 0; display: flex; justify-content: center; }
+  .tradein__seam .node { position: absolute; top: calc(-1 * var(--dot) / 2); }
+
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); font: 500 var(--fs-index)/1.2 var(--font-display); color: var(--color-primary); }
+  .flow__mid { padding: 0.35em 0.8em; border-radius: var(--radius-pill); background: var(--color-primary); color: var(--color-on-primary); }
+
+  @media (min-width: 64rem) {
+    .tradein::before { content: ""; position: absolute; inset: 0 50% 0 0; background: var(--color-primary); }
+    .tradein__grid { position: relative; grid-template-columns: minmax(0, 1fr) var(--gutter) minmax(0, 1fr); }
+    .tradein__old { margin: 0; padding: var(--section-pad) var(--s-4) var(--section-pad) 0; background: none; }
+    .tradein__new { padding: calc(var(--section-pad) + 3.6rem) 0 var(--section-pad) var(--s-4); }
+    .tradein__seam { height: auto; }
+    .tradein__seam::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: var(--color-seam); }
+    .tradein__seam .node { position: sticky; top: 50%; margin-top: calc(var(--section-pad) + 4.6rem); }
+  }
+
+  /* Motion 4: the shores connect — the flow line reveals once, via clip-path */
+  :global(.js) .flow-wrap[data-reveal], :global(.js) .flow-wrap[data-reveal]:not(.is-visible) { opacity: 1; transform: none; transition: none; }
+  :global(.js) .flow-wrap .flow { clip-path: inset(0 0 0 0); transition: clip-path 700ms var(--ease-out); }
+  :global(.js) .flow-wrap:not(.is-visible) .flow { clip-path: inset(0 100% 0 0); }
+  @media (max-width: 47.99rem) {
+    :global(.js) .flow-wrap .flow { transition-duration: 500ms; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .flow-wrap .flow, :global(.js) .flow-wrap:not(.is-visible) .flow { clip-path: none; transition: none; }
+  }
+</style>

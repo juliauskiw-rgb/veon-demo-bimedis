@@ -1,0 +1,30 @@
+---
+import Icon from "./Icon.astro";
+import { contacts } from "../data/site";
+const ua = contacts.offices[0];
+---
+<nav class="sticky-bar" aria-label="Швидкий зв'язок" data-rec="R-002">
+  <a class="sticky-bar__item sticky-bar__item--main" href={contacts.whatsapp}><Icon name="whatsapp" size={22} /> Написати</a>
+  <a class="sticky-bar__item" href={contacts.viber}><Icon name="viber" size={22} /> Viber</a>
+  <a class="sticky-bar__item" href={ua.tel}><Icon name="phone" size={22} /> Подзвонити</a>
+</nav>
+
+<style>
+  .sticky-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: grid; grid-template-columns: 1.15fr 1fr 1.15fr; gap: var(--s-1); padding: var(--s-1) var(--s-2) calc(var(--s-1) + env(safe-area-inset-bottom)); background: var(--color-primary); --focus-ring: var(--color-accent); }
+  .sticky-bar__item { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; min-height: 3rem; border-radius: var(--radius-pill); color: var(--color-on-primary); text-decoration: none; font-weight: 600; font-size: 0.9375rem; transition: background-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
+  .sticky-bar__item:hover { background: var(--color-primary-hover); }
+  .sticky-bar__item:active { transform: translateY(1px); }
+  .sticky-bar__item--main { background: var(--color-accent); color: var(--color-on-accent); }
+  .sticky-bar__item--main:hover { background: var(--color-accent-hover); }
+  @media (max-width: 22.5rem) {
+    .sticky-bar__item:not(.sticky-bar__item--main) :global(.icon) { display: none; }
+  }
+  :global(body) { padding-bottom: calc(4rem + env(safe-area-inset-bottom)); }
+  @media (min-width: 48.0625rem) {
+    .sticky-bar { display: none; }
+    :global(body) { padding-bottom: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sticky-bar__item:active { transform: none; }
+  }
+</style>

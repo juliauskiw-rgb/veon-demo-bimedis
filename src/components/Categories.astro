@@ -1,0 +1,95 @@
+---
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import { categoryGroups, contacts, SOON } from "../data/site";
+---
+<section id="categories" class="section cats" data-rec="R-003">
+  <div class="container">
+    <div class="cats__head">
+      <h2>Обладнання за спеціальностями</h2>
+      <p class="lead">Нове та вживане обладнання у 26 категоріях: від діагностики й хірургії до стоматології, реабілітації та ветеринарії.</p>
+    </div>
+
+    <div class="cats__index seam-line">
+      {categoryGroups.map((g) => (
+        <details class="cat" open>
+          <summary class="cat__summary">
+            <h3 class="cat__title">{g.title}</h3>
+            <span class="node cat__node" aria-hidden="true"></span>
+          </summary>
+          <ul class="cat__items">
+            {g.items.map((name) => (
+              <li><FutureLink note={SOON} class="cat__item">{name}</FutureLink></li>
+            ))}
+          </ul>
+        </details>
+      ))}
+    </div>
+
+    <div class="cats__ask">
+      <p class="cats__ask-text">Не знайшли потрібне? Напишіть менеджеру, що шукаєте.</p>
+      <div class="btn-row" data-rec="R-002">
+        <a class="btn btn--action" href={contacts.whatsapp}><Icon name="whatsapp" /> Написати у WhatsApp</a>
+        <a class="btn btn--outline" href={contacts.viber}><Icon name="viber" /> Viber</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Desktop shows the full index; phones start with groups collapsed (5 instead of 26 lines). Without JS all stay open.
+  const mq = window.matchMedia("(max-width: 47.99rem)");
+  const groups = document.querySelectorAll<HTMLDetailsElement>(".cat");
+  const sync = () => groups.forEach((d) => {
+    d.open = !mq.matches;
+    d.querySelector("summary")?.setAttribute("tabindex", mq.matches ? "0" : "-1");
+  });
+  groups.forEach((d) => d.querySelector("summary")?.addEventListener("click", (e) => { if (!mq.matches) e.preventDefault(); }));
+  sync();
+  mq.addEventListener("change", sync);
+</script>
+
+<style>
+  .cats { padding-top: var(--s-4); }
+  .cats__head { display: grid; gap: var(--s-2); margin-bottom: var(--s-4); }
+  .cats__index { border-top: 1px solid var(--color-line); }
+  .cat { border-bottom: 1px solid var(--color-line); }
+  .cat__summary { display: flex; align-items: center; gap: var(--s-2); min-height: 3.5rem; padding-block: var(--s-2); cursor: pointer; list-style: none; position: relative; }
+  .cat__summary::-webkit-details-marker { display: none; }
+  .cat__summary::after { content: ""; width: 0.6rem; height: 0.6rem; margin-left: auto; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translate(-2px, -2px); transition: transform var(--dur-fast) var(--ease-out); }
+  .cat[open] .cat__summary::after { transform: rotate(-135deg); }
+  .cat__title { font-size: var(--fs-index); font-weight: 600; }
+  .cat__node { display: none; }
+  .cat__items { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 var(--s-3); padding-bottom: var(--s-3); }
+  .cat__items li { display: flex; align-items: baseline; }
+  .cat__items :global(.cat__item) { font: 500 1.125rem/1.35 var(--font-display); color: var(--color-text); padding-block: 0.35rem; position: relative; }
+  /* Motion 3: the underline draws in on hover/focus */
+  .cat__items :global(.cat__item)::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0.2rem; height: 2px; background: var(--color-primary); transform: scaleX(0); transform-origin: left; transition: transform 220ms var(--ease-out); }
+  .cat__items :global(.cat__item:hover)::before, .cat__items :global(.cat__item:focus-visible)::before { transform: scaleX(1); }
+
+  .cats__ask { display: grid; gap: var(--s-3); margin-top: var(--s-4); padding: var(--s-3); border-radius: var(--radius-lg); background: var(--color-surface); border: 1px solid var(--color-line); }
+  .cats__ask-text { font: 600 var(--fs-index)/var(--lh-head) var(--font-display); }
+
+  @media (min-width: 40rem) {
+    .cat__items { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 48rem) {
+    .cat__summary { cursor: default; pointer-events: none; }
+    .cat__summary::after { display: none; }
+    .cat__items :global(.cat__item) { font-size: 1.25rem; }
+  }
+
+  @media (min-width: 64rem) {
+    .cats__head { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--gutter); align-items: end; margin-bottom: var(--s-5); }
+    .cats__head .lead { padding-left: var(--s-4); }
+    .cat { position: relative; padding-block: var(--s-3); }
+    .cat__summary { position: absolute; left: 0; top: var(--s-3); width: calc(50% - var(--gutter) / 2); justify-content: flex-end; text-align: right; padding: 0 var(--s-4) 0 0; min-height: 0; align-items: baseline; }
+    .cat__node { display: block; position: absolute; right: calc(-1 * (var(--gutter) / 2) - var(--dot) / 2); top: 0.55em; }
+    .cat__items { padding: 0 0 0 calc(50% + var(--gutter) / 2 + var(--s-4)); min-height: 2.5rem; align-content: flex-start; }
+    .cats__ask { grid-template-columns: minmax(0, 1fr) auto; align-items: center; padding: var(--s-4); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cat__items :global(.cat__item)::before, .cat__summary::after { transition: none; }
+  }
+</style>

@@ -1,0 +1,47 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { contacts, SOON } from "../data/site";
+const legal = ["Про нас", "Новини", "FAQ", "Угода користувача", "Політика конфіденційності"];
+---
+<footer id="footer" class="site-footer" data-rec="R-002">
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand">
+      <a class="site-footer__logo" href="#top" aria-label="Bimedis, на початок сторінки">
+        <img src="/bimedis-logo.svg" width="121" height="47" alt="Bimedis" />
+      </a>
+      <p class="site-footer__legal">ТзОВ «Бімедіс»</p>
+    </div>
+    <ul class="site-footer__links">
+      {legal.map((l) => <li><FutureLink note={SOON} class="site-footer__fl">{l}</FutureLink></li>)}
+    </ul>
+    <ul class="site-footer__phones">
+      {contacts.offices.map((o) => (
+        <li><span class="site-footer__country">{o.country}</span> <a href={o.tel}>{o.phone}</a></li>
+      ))}
+    </ul>
+  </div>
+  <div class="container site-footer__bottom">
+    <p>© 2013–2026 Bimedis</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--color-primary); color: var(--color-on-primary); --focus-ring: var(--color-accent); padding-block: var(--s-5) var(--s-3); }
+  .site-footer__grid { display: grid; gap: var(--s-4); align-items: start; }
+  .site-footer__brand { display: grid; gap: var(--s-1); justify-items: start; }
+  .site-footer__logo { display: inline-flex; border-radius: var(--radius); }
+  .site-footer__logo img { height: 2.5rem; width: auto; }
+  .site-footer__legal { color: var(--color-on-primary-soft); font-size: var(--fs-small); }
+  .site-footer__links { display: grid; gap: 0.25rem; }
+  .site-footer__links :global(.site-footer__fl) { min-height: 2.75rem; color: var(--color-on-primary-soft); }
+  .site-footer__links :global(.site-footer__fl:hover) { color: var(--color-on-primary); }
+  .site-footer__phones { display: grid; gap: var(--s-1); }
+  .site-footer__phones li { display: flex; flex-wrap: wrap; gap: var(--s-1); align-items: baseline; }
+  .site-footer__country { color: var(--color-on-primary-soft); font-size: var(--fs-small); min-width: 4rem; }
+  .site-footer__phones a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--color-on-primary); font-weight: 600; font-variant-numeric: tabular-nums; text-decoration: none; }
+  .site-footer__phones a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+  .site-footer__bottom { margin-top: var(--s-4); padding-top: var(--s-3); border-top: 1px solid var(--color-on-primary-line); font-size: var(--fs-small); color: var(--color-on-primary-soft); }
+  @media (min-width: 48rem) {
+    .site-footer__grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr); }
+  }
+</style>
